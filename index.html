@@ -26,7 +26,7 @@
         function randomOrb() {
             let x = rand(canvasWidth);
             let y = rand(canvasHeight);
-            let r = rand(100, 250);
+            let r = Math.floor(rand(100, 250) * radiusCoef);
             let displacementx = rand(-10, 10);
             let displacementy = rand(-10, 10);
             let color = colors[rand(colors.length)]
@@ -60,6 +60,9 @@
         let canvasHeight = document.body.clientHeight;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
+        let widthCoef = canvasWidth / 1920;
+        let heightCoef = canvasHeight / 731;
+        let radiusCoef = Math.min(widthCoef, heightCoef); 
         let con = canvas.getContext("2d");
         let time = new Date().getMilliseconds();
         let arr = [];
