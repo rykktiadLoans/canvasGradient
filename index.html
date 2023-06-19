@@ -27,8 +27,8 @@
             let x = rand(canvasWidth);
             let y = rand(canvasHeight);
             let r = Math.floor(rand(100, 250) * radiusCoef);
-            let displacementx = rand(-10, 10);
-            let displacementy = rand(-10, 10);
+            let displacementx = Math.floor(rand(-10, 10) * heightCoef);
+            let displacementy = Math.floor(rand(-10, 10) * widthCoef);
             let color = colors[rand(colors.length)]
             let frames = rand(10, 50);
             return new Orb(x, y, r, color, displacementx, displacementy, frames);
@@ -62,7 +62,8 @@
         canvas.height = canvasHeight;
         let widthCoef = canvasWidth / 1920;
         let heightCoef = canvasHeight / 731;
-        let radiusCoef = Math.min(widthCoef, heightCoef); 
+        let radiusCoef = Math.max(widthCoef, heightCoef); 
+        console.log(radiusCoef, heightCoef, widthCoef);
         let con = canvas.getContext("2d");
         let time = new Date().getMilliseconds();
         let arr = [];
