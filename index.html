@@ -62,7 +62,7 @@
         canvas.height = canvasHeight;
         let widthCoef = canvasWidth / 1920;
         let heightCoef = canvasHeight / 731;
-        let radiusCoef = Math.max(widthCoef, heightCoef); 
+        let radiusCoef = (widthCoef + heightCoef) / 2; 
         console.log(radiusCoef, heightCoef, widthCoef);
         let con = canvas.getContext("2d");
         let time = new Date().getMilliseconds();
