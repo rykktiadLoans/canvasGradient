@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Gradient</title>
+</head>
+
+<body style="padding: 0px; margin: 0px; outline: 0px; border: 0px; height:100vh; width: 100vw; overflow: hidden;">
+    <canvas id="canv" style="padding: 0px; margin: 0px; outline: 0px; border: 0px;"></canvas>
+    <script>
+        class Orb {
+            constructor(x, y, r, color, displacementx, displacementy, timeFrames) {
+                this.x = x;
+                this.y = y;
+                this.radius = r;
+                this.color = color;
+                this.displacementx = displacementx;
+                this.displacementy = displacementy;
+                this.timePassed = 0;
+                this.timeFrames = timeFrames;
+            }
+        }
+
+        function randomOrb() {
+            let x = rand(canvasWidth);
+            let y = rand(canvasHeight);
+            let r = rand(100, 250);
+            let displacementx = rand(-10, 10);
+            let displacementy = rand(-10, 10);
+            let color = colors[rand(colors.length)]
+            let frames = rand(10, 50);
+            return new Orb(x, y, r, color, displacementx, displacementy, frames);
+        }
+
+        function rand(start, end) {
+            if (end === undefined) {
+                return Math.floor(Math.random() * start);
+            }
+            return Math.floor(Math.random() * (Math.abs(start) + Math.abs(end))) + start;
+        }
+
+        let canvas = document.querySelector("#canv");
+        let canvasWidth = document.body.clientWidth;
+        let colors = [
+            "255, 0, 0",
+            "255, 255, 0",
+            "153, 255, 0",
+            "26, 255, 0",
+            "0, 255, 110",
+            "0, 255, 229",
+            "0, 179, 255",
+            "0, 94, 255",
+            "8, 0, 255",
+            "208, 0, 255",
+            "255, 0, 111"
+        ]
+        const NUMBER_OF_ORBS = 25;
+        let canvasHeight = document.body.clientHeight;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        let con = canvas.getContext("2d");
+        let time = new Date().getMilliseconds();
+        let arr = [];
+        for (let i = 0; i < NUMBER_OF_ORBS; i++) {
+            arr.push(randomOrb());
+        }
+
+        function bgAnimation(timeStamp) {
+            con.clearRect(0, 0, canvasWidth, canvasHeight);
+            let diff = (timeStamp - time) / 175;
+            for (let i = 0; i < NUMBER_OF_ORBS; i++) {
+                let e = arr[i];
+                e.x += Math.floor(e.displacementx * diff);
+                e.y += Math.floor(e.displacementy * diff);
+                e.timePassed += diff;
+            }
+            for (let i = 0; i < NUMBER_OF_ORBS; i++) {
+                let e = arr[i];
+                let g = con.createRadialGradient(e.x, e.y, 0, e.x, e.y, +e.radius);
+                let progress = e.timePassed / e.timeFrames;
+                let power = 0;
+                if (progress <= 0.5) {
+                    power = 1 - (1 - progress) * (1 - progress);
+                }
+                else {
+                    progress = 1 - progress;
+                    power = 1 - (1 - progress) * (1 - progress);
+                }
+                g.addColorStop(0, `rgba(${e.color}, ${power})`);
+                g.addColorStop(1, `rgba(${e.color}, 0)`)
+                con.fillStyle = g;
+                con.fillRect(0, 0, canvasWidth, canvasHeight);
+            }
+            for (let i = 0; i < NUMBER_OF_ORBS; i++) {
+                let e = arr[i];
+                if (e.timePassed - e.timeFrames > 0) {
+                    arr[i] = randomOrb();
+                }
+            }
+            time = timeStamp;
+            requestAnimationFrame(bgAnimation);
+        }
+        requestAnimationFrame(bgAnimation);
+
+    </script>
+</body>
+
+</html>
