@@ -24,9 +24,9 @@
         }
 
         function randomOrb() {
-            let x = rand(canvasWidth);
-            let y = rand(canvasHeight);
-            let r = Math.floor(rand(100, 250) * radiusCoef);
+            let x = rand(-200, canvasWidth+ 200);
+            let y = rand(-200, canvasHeight+ 200);
+            let r = Math.floor(rand(200, 600) * radiusCoef);
             let displacementx = Math.floor(rand(-10, 10) * heightCoef);
             let displacementy = Math.floor(rand(-10, 10) * widthCoef);
             let color = colors[rand(colors.length)]
@@ -56,7 +56,7 @@
             "208, 0, 255",
             "255, 0, 111"
         ]
-        const NUMBER_OF_ORBS = 25;
+        const NUMBER_OF_ORBS = 30;
         let canvasHeight = document.body.clientHeight;
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
@@ -96,7 +96,11 @@
                 g.addColorStop(1, `rgba(${e.color}, 0)`)
                 con.fillStyle = g;
                 con.fillRect(0, 0, canvasWidth, canvasHeight);
+                
             }
+            con.font = "72px Century Gothic";
+            con.fillStyle = "white";
+            con.fillText("Yo.", 50, 200); 
             for (let i = 0; i < NUMBER_OF_ORBS; i++) {
                 let e = arr[i];
                 if (e.timePassed - e.timeFrames > 0) {
